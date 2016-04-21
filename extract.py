@@ -1,3 +1,5 @@
+#using enjarify on an apk file, afterwards extracting the java files in a designated folder
+
 import fnmatch
 import sys
 import os
