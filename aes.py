@@ -4,6 +4,7 @@ import glob
 import subprocess
 import os.path
 import random
+import timing
 import string
 
 # var represents the android .har file we will work with
