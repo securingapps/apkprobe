@@ -3,26 +3,13 @@ import sys
 import os
 import subprocess
 import timing
-#colorama is used for printing a coloured string
-from colorama import init
-init()
-
-# var represents the android apk we will work with
-#var = input("Please enter an apk: ")
-#var2 is the name of the file without the type
-#var2= var[0:-4]
-#rootdir = './Extract_'+var2+'/'
-#the rootdirectory in which we will work
-#print (rootdir)
-
-# searching for files that match 'var' in the current folder
+# extractJavaFiles class is used for enjarifying the apk files and extracting the java files from the jar
 class extractJavaFiles:
 	def extract(self):
 		# the 'p' process will enjarify the apk file (the output file will be 'nameofapk'+'-enjarify.jar')
 		p = subprocess.Popen('python -O -m enjarify.main ' + var, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 		print('Enjarifying...')
 		for line in p.stdout.readlines():
-			#print (line)
 			retval = p.wait()
 		#searching for the .jar file in the current folder
 		for file in os.listdir('.'):
@@ -30,18 +17,17 @@ class extractJavaFiles:
 				print (file)
 				# the 'p' process will extract the java files from the jar file (the files and folder will be saved in ./Extract_(name of the file)/ folder)
 				p = subprocess.Popen('java -jar jd-core.jar ' + file +' ./Extract_'+var2, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-				#print('Extracting java files...')
 				for line in p.stdout.readlines():
-					#print (line)
 					retval = p.wait()
 			
-		print('Java files have been extracted to ./Extract_',var2,'/ folder')
-		
+		#print('Java files have been extracted to ./Extract_',var2,'/ folder')
+# isObfuscated class will check the names of the java files and count which are obfuscated
 class isObfuscated:
 	def obf_files(self):
 		#print('File "IsFileObfuscated_'+var2+'.txt" was created in the rootdirectory' )
-		filename1  = open("IsFileObfuscated_"+var2+".txt",'w')
-		sys.stdout = filename1
+		#the outcome will be printed in 'IsFileObfuscated+ 'name of jar file''
+		filename  = open("IsFileObfuscated_"+var2+".txt",'w')
+		sys.stdout = filename
 		count = 0 #total number of java files
 		obfuscated = 0 #total number of obfuscated files
 		not_obfuscated = 0 #total number of non-obfuscated files
@@ -55,10 +41,8 @@ class isObfuscated:
 					if (fnmatch.fnmatch(file, '[a-z].java') and file.islower()) or fnmatch.fnmatch(file,'[a-z][a-z]*.java') and file.islower() or fnmatch.fnmatch(file,'[a-z][A-Z].java'):
 						#number of obfuscated elements increases
 						obfuscated+=1
-						#print(file)
 					elif len(file[0:-5])==3 and file.islower()==False and file.isupper()==False:
 						obfuscated+=1
-						#print(file)
 					#if the filename contains lowercase and uppercase letters
 					elif file.islower()==False and file.isupper()==False:
 						#number of non obfuscated files increases
@@ -78,13 +62,13 @@ class isObfuscated:
 		else:
 		#if percentage above 66% => good enough
 			print('Filenames are obfuscated')
-		#filename1.close()
-
+# isFolderObfuscated class will check the names of the folders and count which are obfuscated
 class isFolderObfuscated:
 	def obf_folders(self):
 		#print('File "IsFolderObfuscated_'+var2+'.txt" was created in the rootdirectory' )
-		filename2  = open("IsFolderObfuscated_"+var2+".txt",'w')
-		sys.stdout = filename2
+		#the outcome will be printed in 'IsFolderObfuscated+ 'name of jar file''
+		filename  = open("IsFolderObfuscated_"+var2+".txt",'w')
+		sys.stdout = filename
 		# number of folders in the rootdirectory
 		count = 0
 		#number of obfuscated folders
@@ -98,20 +82,18 @@ class isFolderObfuscated:
 						#verifying if the name contains more of the same letter
 						if i+2<=(len(name)-1) and name[i] == name[i+1] == name[i+2]:
 							obfuscated+=1 #no. of obfuscated folder name increases
-							#print ('Obfuscated folder name = ',name)
 							break
 						elif i ==0==len(name)-1: # verrifying if the name of a folder contains just 1 letter
 							obfuscated+=1 #no. of obfuscated folder name increases
-							#print ('Obfuscated folder name = ',name)
+				#verifies if the folder name has 2 letters of different cases
 				elif len(name)==2 and name.islower()==False and name.isupper()==False:
 					obfuscated+=1 #no. of obfuscated folder name increases
-					#print ('Obfuscated folder name = ',name)
+				#verifies if the folder name has one letter in upper case
 				elif len(name)==1 and name.isupper():
 					obfuscated+=1 #no. of obfuscated folder name increases
-					#print ('Obfuscated folder name = ',name)
+				#verifies if the folder name does not contain vowels
 				elif '[a,e,i,o,u]' not in name:
 					obfuscated+=1 #no. of obfuscated folder name increases
-					#print ('Obfuscated folder name = ',name)
 		print('Total number of folders = ',count)
 		print('No. of obfuscated folders = ', obfuscated)
 		#the percentage of obfuscated folders => number of obfuscated folders divided by the total number of folders
@@ -126,21 +108,20 @@ class isFolderObfuscated:
 		else:
 		#if percentage above 66% => good enough
 			print('Folder names are obfuscated')
-		
-		#filename2.close()
-
-		#searching in all java files
+			
+			
+#nativeCode class verifies if the java files contain native code
 class nativeCode:
 	def native_code(self):
 		#print('File "NativeCode_"'+var2+'".txt" was created in the rootdirectory' )
-		filename3  = open("NativeCode_"+var2+".txt",'w')
-		sys.stdout = filename3
+		#the outcome will be printed in 'NativeCode+'jar file''
+		filename  = open("NativeCode_"+var2+".txt",'w')
+		sys.stdout = filename
 		for subdir, dirs, files in os.walk(rootdir):
 			for file in files:
 				p=os.path.join(subdir,file)
 				my_file1 = open(p, "r")
 				for line in my_file1:
-					#for part in line.split():
 						#searching in the lines of the java code and if the line ends with a semicolon
 						#and has the word native we print it
 					if  'public native' in line and line[-2]==';':
@@ -160,9 +141,8 @@ class nativeCode:
 						print ('The path', p)
 						print('*'*100)
 				my_file1.close()
-		#filename3.close()
 				
-
+# unzipApk class will unzip the files in the apk archive to a folder
 class unzipApk:
 	def unzip_apk(self):
 		for file in os.listdir('.'):
@@ -171,25 +151,28 @@ class unzipApk:
 				p = subprocess.Popen('7z x '+ var +' "-o./Unzip'+ var+'"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 				for line in p.stdout.readlines():
 					retval = p.wait()
-					
+
+#isSo class will verify if there are .so files in the libs folder of the unzipped apk					
 class isSo:
 	def so_files(self):
 		#print('SoLibraries_"'+var2+'".txt" was created in the rootdirectory' )
-		#the output of the script will be saved to SoLibraries.txt
-		filename4  = open("SoLibraries_"+var+".txt",'w')
-		sys.stdout = filename4
+		#the output of the script will be saved to SoLibraries+'jar file'.txt
+		filename  = open("SoLibraries_"+var+".txt",'w')
+		sys.stdout = filename
 		#this method check for.so files in the Unzip_name_of_apk folder
 		for subdir, dirs, files in os.walk(rootdir3):
 			for file in files:
 				p=os.path.join(subdir,file)
 				if(fnmatch.fnmatch(file, '*.so')):
 					print (file,' found in ',p)
-		#filename4.close()
+
+#trustManager class uses a dictionary (trustmanager_dict.txt) with relevant terms used in SSL validation techniques
 class trustManager:
 	def trust_manager(self):
 		#print('Security_"'+var2+'".txt" was created in the rootdirectory' )
-		filename5  = open("Security_"+var2+".txt",'w')
-		sys.stdout = filename5
+		#the outcome will be printed in 'Security_'jar file''
+		filename  = open("Security_"+var2+".txt",'w')
+		sys.stdout = filename
 		with open('trustmanager_dict.txt') as f1:
 			l = f1.read()
 			words = l.split()
@@ -209,13 +192,13 @@ class trustManager:
 									break
 						my_file2.close()
 		f1.close()				
-		#filename5.close()
 				
+#encryptAES class searches for the AES encryption method in the java files
 class encryptAES:
 	def encrypt_aes(self):
 		#print('EncryptAES_"'+var2+'".txt" was created in the rootdirectory' )
-		filename6  = open("EncryptAES_"+var2+".txt",'w')
-		sys.stdout = filename6
+		filename  = open("EncryptAES_"+var2+".txt",'w')
+		sys.stdout = filename
 		for subdir, dirs, files in os.walk(rootdir):
 			for file in files:
 				p=os.path.join(subdir,file)
@@ -229,12 +212,14 @@ class encryptAES:
 							print('The path of the file in which the string was found',p)
 							break
 				my_file3.close()
-		#filename6.close()
+
+#doFinal searches for dofinal function in the java files
 class doFinal:
 	def do_final(self):
 		#print('DoFinal_"'+var2+'".txt" was created in the rootdirectory' )
-		filename7  = open("DoFinal_"+var2+".txt",'w')
-		sys.stdout = filename7
+		#the outcome is printed in 'DoFinal+'java file''
+		filename  = open("DoFinal_"+var2+".txt",'w')
+		sys.stdout = filename
 		for subdir, dirs, files in os.walk(rootdir):
 			for file in files:
 				p=os.path.join(subdir,file)
@@ -248,7 +233,8 @@ class doFinal:
 							print('The path of the file in which the string was found',p)
 							break
 				my_file4.close()
-		#filename7.close()
+
+#cipherInit class searches for cipher.init function, used for encryption and decryption
 class cipherInit:
 	def cypher_init(self):
 		#print('CipherInit_"'+var2+'".txt" was created in the rootdirectory' )
@@ -267,20 +253,14 @@ class cipherInit:
 								print('*'*100)
 								print('The line of code in which the string was found',line)
 								print('The path of the file in which the string was found',p)
-								#if found , the second parameter (the name of the public key) will be saved in Output.txt
-								#str = line
-								#secret = re.search('((.*)(,|\))(.*)(,|\)))',str)
-								#TODO: split and special if for (key) cases
-								
-								#if secret and secret.group(4).isnumeric()==False:
-								#	print ('Match found: ', secret.group(4))
-								#	with open("Output.txt", "w") as text_file:
-								#		text_file.write(format(secret.group(4)+'\n'))
-								#secret2 = line.split(',')[1].lstrip()
+								# i,j,k,l are special characters used to enclose the second parameter of the function, they are used to
+								# extract the second parameter and print it in Output.txt
+								#TODO: manage to print on different lines
 								i = line.find(",") + 2
 								j = line.find(",",i)
 								k = line.find(");",i)
 								l = line.find(")")+ 1
+								#in Output.txt the key parameter is printed 
 								with open("Output.txt", "w") as text_file:
 									if i and j:
 										print ('Key found: ', line[i:j])
@@ -298,16 +278,6 @@ class cipherInit:
 								print('*'*100)
 								print('The line of code in which the string was found',line)
 								print('The path of the file in which the string was found',p)
-								#if found , the second parameter (the name of the public key) will be saved in Output.txt
-								#str = line
-								#secret = re.search('((.*)(,|\))(.*)(,|\)))',str)
-								#TODO: split and special if for (key) cases
-								
-								#if secret and secret.group(4).isnumeric()==False:
-								#	print ('Match found: ', secret.group(4))
-								#	with open("Output.txt", "w") as text_file:
-								#		text_file.write(format(secret.group(4)+'\n'))
-								#secret2 = line.split(',')[1].lstrip()
 								i = line.find(",") + 2
 								j = line.find(",",i)
 								k = line.find(");",i)
@@ -328,16 +298,6 @@ class cipherInit:
 								print('*'*100)
 								print('The line of code in which the string was found',line)
 								print('The path of the file in which the string was found',p)
-								#if found , the second parameter (the name of the public key) will be saved in Output.txt
-								#str = line
-								#secret = re.search('((.*)(,|\))(.*)(,|\)))',str)
-								#TODO: split and special if for (key) cases
-								
-								#if secret and secret.group(4).isnumeric()==False:
-								#	print ('Match found: ', secret.group(4))
-								#	with open("Output.txt", "w") as text_file:
-								#		text_file.write(format(secret.group(4)+'\n'))
-								#secret2 = line.split(',')[1].lstrip()
 								i = line.find(",") + 2
 								j = line.find(",",i)
 								k = line.find(");",i)
@@ -356,7 +316,8 @@ class cipherInit:
 								break
 								
 				my_file5.close()
-		#filename8.close()
+#class keySpec is used for extracting the key parameter from Output.txt and search the java files for this key
+# TODO: search for all keys to see if they are defined as plain strings
 #class keySpec:
 	#def key_spec(self):
 	#reading the public key name
@@ -381,10 +342,11 @@ class cipherInit:
 	#	else:
 			#print('No public key parameter found')
 			
-
+#hashfunctions class used hash_functions_dict.txt to search for usages of sha1,sha256,md5 and the digest function
 class hashfunctions:
 	def hash_functions(self):
 		#print('Hash_functions_"'+var2+'".txt" was created in the rootdirectory' )
+		#the outcome will pe printed in 'Hash_functions_+'jar file''
 		filename9  = open("Hash_functions_"+var2+".txt",'w')
 		sys.stdout = filename9
 		with open('hash_functions_dict.txt') as f2:
@@ -405,18 +367,18 @@ class hashfunctions:
 									break
 						my_file6.close()
 		f2.close()
-		#filename9.close()
+
+		
+#for every apk file in the rootdirectory, the classes with the required methods will be called
 for file in os.listdir('.'):
 			if fnmatch.fnmatch(file, '*.apk'):
 				# var represents the android apk we will work with
 				var = file
-				print(var)
 				#var2 is the name of the file without the type
 				var2= var[0:-4]
-				rootdir = './Extract_'+var2+'/'
 				#the rootdirectory in which we will work
-				print (rootdir)			
-				#rootdirectory will be the folder with the unzipped files of the apk
+				rootdir = './Extract_'+var2+'/'	
+				#rootdir3 will be the folder with the unzipped files of the apk
 				rootdir3 = './Unzip'+var2+'/'
 				test=extractJavaFiles()
 				test.extract()
