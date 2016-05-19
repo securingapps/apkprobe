@@ -5,13 +5,15 @@ import subprocess
 import os.path
 import random
 import string
-
+import timing
+import sys
 # var represents the android .har file we will work with
 var = input("Please enter a jar file: ")
 rootdir = './Extract_'+var+'/'
 #the rootdirectory in which we will work
 print (rootdir)
-
+filename  = open("Hash_functions_"+var+".txt",'w')
+sys.stdout = filename
 class hashfunctions:
 	def sha256(self):
 		for subdir, dirs, files in os.walk(rootdir):
