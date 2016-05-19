@@ -1,7 +1,12 @@
-trustmanager
 sslsocket
 checkServerTrusted
 getPeerCertificates
 certificate
 sslcontext
 TrustManager
+HostnameVerifier
+HostNameVerifier
+TrustManagerFactory
+KeyStore
+checkClientTrusted
+openssl

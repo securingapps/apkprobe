@@ -3,6 +3,9 @@ import sys
 import os
 import subprocess
 import timing
+#colorama is used for printing a coloured string
+from colorama import init
+init()
 
 # var represents the android apk we will work with
 #var = input("Please enter an apk: ")
