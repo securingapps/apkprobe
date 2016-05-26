@@ -8,13 +8,14 @@ class extractJavaFiles:
 	def extract(self):
 		# the 'p' process will enjarify the apk file (the output file will be 'nameofapk'+'-enjarify.jar')
 		p = subprocess.Popen('python -O -m enjarify.main ' + var, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+		print('Searching for APKs...')
 		print('Enjarifying...')
 		for line in p.stdout.readlines():
 			retval = p.wait()
 		#searching for the .jar file in the current folder
 		for file in os.listdir('.'):
 			if fnmatch.fnmatch(file, var2+'-enjarify.jar') :
-				print (file)
+				#print (file)
 				# the 'p' process will extract the java files from the jar file (the files and folder will be saved in ./Extract_(name of the file)/ folder)
 				p = subprocess.Popen('java -jar jd-core.jar ' + file +' ./Extract_'+var2, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 				for line in p.stdout.readlines():
@@ -26,8 +27,11 @@ class isObfuscated:
 	def obf_files(self):
 		#print('File "IsFileObfuscated_'+var2+'.txt" was created in the rootdirectory' )
 		#the outcome will be printed in 'IsFileObfuscated+ 'name of jar file''
-		filename  = open("IsFileObfuscated_"+var2+".txt",'w')
+		filename  = open("AnalyzeFile_"+var2+".txt",'w')
 		sys.stdout = filename
+		print('-'*100)
+		print('1. Analyze file obfuscation')
+		print('-'*100)
 		count = 0 #total number of java files
 		obfuscated = 0 #total number of obfuscated files
 		not_obfuscated = 0 #total number of non-obfuscated files
@@ -67,8 +71,11 @@ class isFolderObfuscated:
 	def obf_folders(self):
 		#print('File "IsFolderObfuscated_'+var2+'.txt" was created in the rootdirectory' )
 		#the outcome will be printed in 'IsFolderObfuscated+ 'name of jar file''
-		filename  = open("IsFolderObfuscated_"+var2+".txt",'w')
-		sys.stdout = filename
+		#filename  = open("IsFolderObfuscated_"+var2+".txt",'w')
+		#sys.stdout = filename
+		print('-'*100)
+		print('2. Analyze folder obfuscation')
+		print('-'*100)
 		# number of folders in the rootdirectory
 		count = 0
 		#number of obfuscated folders
@@ -115,8 +122,11 @@ class nativeCode:
 	def native_code(self):
 		#print('File "NativeCode_"'+var2+'".txt" was created in the rootdirectory' )
 		#the outcome will be printed in 'NativeCode+'jar file''
-		filename  = open("NativeCode_"+var2+".txt",'w')
-		sys.stdout = filename
+		#filename  = open("NativeCode_"+var2+".txt",'w')
+		#sys.stdout = filename
+		print('-'*100)
+		print('3. Analyze native code')
+		print('-'*100)
 		for subdir, dirs, files in os.walk(rootdir):
 			for file in files:
 				p=os.path.join(subdir,file)
@@ -148,7 +158,7 @@ class unzipApk:
 		for file in os.listdir('.'):
 			if fnmatch.fnmatch(file, var):
 				#p runs the unzip command
-				p = subprocess.Popen('7z x '+ var +' "-o./Unzip'+ var+'"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+				p = subprocess.Popen('7z x '+ var +' "-o./Unzip'+ var2+'"', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 				for line in p.stdout.readlines():
 					retval = p.wait()
 
@@ -157,8 +167,11 @@ class isSo:
 	def so_files(self):
 		#print('SoLibraries_"'+var2+'".txt" was created in the rootdirectory' )
 		#the output of the script will be saved to SoLibraries+'jar file'.txt
-		filename  = open("SoLibraries_"+var+".txt",'w')
-		sys.stdout = filename
+		#filename  = open("SoLibraries_"+var+".txt",'w')
+		#sys.stdout = filename
+		print('-'*100)
+		print('4. Search for .so files')
+		print('-'*100)
 		#this method check for.so files in the Unzip_name_of_apk folder
 		for subdir, dirs, files in os.walk(rootdir3):
 			for file in files:
@@ -171,8 +184,11 @@ class trustManager:
 	def trust_manager(self):
 		#print('Security_"'+var2+'".txt" was created in the rootdirectory' )
 		#the outcome will be printed in 'Security_'jar file''
-		filename  = open("Security_"+var2+".txt",'w')
-		sys.stdout = filename
+		#filename  = open("Security_"+var2+".txt",'w')
+		#sys.stdout = filename
+		print('-'*100)
+		print('5. Search for SSL validation components')
+		print('-'*100)
 		with open('trustmanager_dict.txt') as f1:
 			l = f1.read()
 			words = l.split()
@@ -197,8 +213,11 @@ class trustManager:
 class encryptAES:
 	def encrypt_aes(self):
 		#print('EncryptAES_"'+var2+'".txt" was created in the rootdirectory' )
-		filename  = open("EncryptAES_"+var2+".txt",'w')
-		sys.stdout = filename
+		#filename  = open("EncryptAES_"+var2+".txt",'w')
+		#sys.stdout = filename
+		print('-'*100)
+		print('6. Search for AES encryption method')
+		print('-'*100)
 		for subdir, dirs, files in os.walk(rootdir):
 			for file in files:
 				p=os.path.join(subdir,file)
@@ -218,8 +237,11 @@ class doFinal:
 	def do_final(self):
 		#print('DoFinal_"'+var2+'".txt" was created in the rootdirectory' )
 		#the outcome is printed in 'DoFinal+'java file''
-		filename  = open("DoFinal_"+var2+".txt",'w')
-		sys.stdout = filename
+		#filename  = open("DoFinal_"+var2+".txt",'w')
+		#sys.stdout = filename
+		print('-'*100)
+		print('7. Search for doFinal function')
+		print('-'*100)
 		for subdir, dirs, files in os.walk(rootdir):
 			for file in files:
 				p=os.path.join(subdir,file)
@@ -238,8 +260,11 @@ class doFinal:
 class cipherInit:
 	def cypher_init(self):
 		#print('CipherInit_"'+var2+'".txt" was created in the rootdirectory' )
-		filename8  = open("CipherInit_"+var2+".txt",'w')
-		sys.stdout = filename8
+		#filename8  = open("CipherInit_"+var2+".txt",'w')
+		#sys.stdout = filename8
+		print('-'*100)
+		print('8. Search for Cipher.init function')
+		print('-'*100)
 		for subdir, dirs, files in os.walk(rootdir):
 			for file in files:
 				p=os.path.join(subdir,file)
@@ -347,8 +372,11 @@ class hashfunctions:
 	def hash_functions(self):
 		#print('Hash_functions_"'+var2+'".txt" was created in the rootdirectory' )
 		#the outcome will pe printed in 'Hash_functions_+'jar file''
-		filename9  = open("Hash_functions_"+var2+".txt",'w')
-		sys.stdout = filename9
+		#filename9  = open("Hash_functions_"+var2+".txt",'w')
+		#sys.stdout = filename9
+		print('-'*100)
+		print('9. Search for Hash functions')
+		print('-'*100)
 		with open('hash_functions_dict.txt') as f2:
 			l = f2.read()
 			words = l.split()
