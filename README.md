@@ -15,6 +15,11 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>>
 Afterwards type exit() so that you can run the script.
 
+Also to be sure everything will run accordingly add to the Path variable the following:
+This is an example: C:\Python33\;C:\ProgramFiles\7-Zip\;C:\Program Files\Java\jdk1.7.0_51\bin;
+
+Also on the root directory make sure you have the jd-core.jar provided.
+
 The script we are using is called extract.py. In PowerShell just change the directory to the directory in which this script is along with the dependecies and the APK file(s). Afterwards write 'python extract.py'.
 The first thing the script does is obtaining the JAR file from the APK file. For this we used the enjarify tool which can be found online at https://github.com/google/enjarify. In this moment it will search the rootdirectory for all the APK files.
 
@@ -28,3 +33,4 @@ The next class will conduct a search in the java class for Secure Socket Layer r
 
 The next 3 classes are related to encryption methods. A search is performed in the java classes of the jar to find symmetric encryption methods (AES), hash functions (SHA1,SHA256,MD5), functions related to cryptography (cipher.init, doFinal) and the path in which these terms were found.
 
+Update: The new version will print the outcome of every analysis to Analyzefile_'name of jar'
