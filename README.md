@@ -18,6 +18,8 @@ Afterwards type exit() so that you can run the script.
 Also to be sure everything will run accordingly add to the Path variable the following:
 This is an example: C:\Python33\;C:\ProgramFiles\7-Zip\;C:\Program Files\Java\jdk1.7.0_51\bin;
 
+Editing the Path variable: My Computer -> Properties -> Advanced system settings->Environment Variables-> Select 'PATH' and edit
+
 Also on the root directory make sure you have the jd-core.jar provided.
 
 The script we are using is called extract.py. In PowerShell just change the directory to the directory in which this script is along with the dependecies and the APK file(s). Afterwards write 'python extract.py'.
