@@ -21,12 +21,10 @@ class extractJavaFiles:
 				for line in p.stdout.readlines():
 					retval = p.wait()
 			
-		#print('Java files have been extracted to ./Extract_',var2,'/ folder')
+#the output will be printed in 'AnalyzeFile+'jar file name''
 # isObfuscated class will check the names of the java files and count which are obfuscated
 class isObfuscated:
 	def obf_files(self):
-		#print('File "IsFileObfuscated_'+var2+'.txt" was created in the rootdirectory' )
-		#the outcome will be printed in 'IsFileObfuscated+ 'name of jar file''
 		filename  = open("AnalyzeFile_"+var2+".txt",'w')
 		sys.stdout = filename
 		print('-'*100)
@@ -69,10 +67,7 @@ class isObfuscated:
 # isFolderObfuscated class will check the names of the folders and count which are obfuscated
 class isFolderObfuscated:
 	def obf_folders(self):
-		#print('File "IsFolderObfuscated_'+var2+'.txt" was created in the rootdirectory' )
-		#the outcome will be printed in 'IsFolderObfuscated+ 'name of jar file''
-		#filename  = open("IsFolderObfuscated_"+var2+".txt",'w')
-		#sys.stdout = filename
+	
 		print('-'*100)
 		print('2. Analyze folder obfuscation')
 		print('-'*100)
@@ -120,10 +115,6 @@ class isFolderObfuscated:
 #nativeCode class verifies if the java files contain native code
 class nativeCode:
 	def native_code(self):
-		#print('File "NativeCode_"'+var2+'".txt" was created in the rootdirectory' )
-		#the outcome will be printed in 'NativeCode+'jar file''
-		#filename  = open("NativeCode_"+var2+".txt",'w')
-		#sys.stdout = filename
 		print('-'*100)
 		print('3. Analyze native code')
 		print('-'*100)
@@ -165,10 +156,6 @@ class unzipApk:
 #isSo class will verify if there are .so files in the libs folder of the unzipped apk					
 class isSo:
 	def so_files(self):
-		#print('SoLibraries_"'+var2+'".txt" was created in the rootdirectory' )
-		#the output of the script will be saved to SoLibraries+'jar file'.txt
-		#filename  = open("SoLibraries_"+var+".txt",'w')
-		#sys.stdout = filename
 		print('-'*100)
 		print('4. Search for .so files')
 		print('-'*100)
@@ -182,10 +169,6 @@ class isSo:
 #trustManager class uses a dictionary (trustmanager_dict.txt) with relevant terms used in SSL validation techniques
 class trustManager:
 	def trust_manager(self):
-		#print('Security_"'+var2+'".txt" was created in the rootdirectory' )
-		#the outcome will be printed in 'Security_'jar file''
-		#filename  = open("Security_"+var2+".txt",'w')
-		#sys.stdout = filename
 		print('-'*100)
 		print('5. Search for SSL validation components')
 		print('-'*100)
@@ -235,10 +218,6 @@ class encryptAES:
 #doFinal searches for dofinal function in the java files
 class doFinal:
 	def do_final(self):
-		#print('DoFinal_"'+var2+'".txt" was created in the rootdirectory' )
-		#the outcome is printed in 'DoFinal+'java file''
-		#filename  = open("DoFinal_"+var2+".txt",'w')
-		#sys.stdout = filename
 		print('-'*100)
 		print('7. Search for doFinal function')
 		print('-'*100)
@@ -259,9 +238,6 @@ class doFinal:
 #cipherInit class searches for cipher.init function, used for encryption and decryption
 class cipherInit:
 	def cypher_init(self):
-		#print('CipherInit_"'+var2+'".txt" was created in the rootdirectory' )
-		#filename8  = open("CipherInit_"+var2+".txt",'w')
-		#sys.stdout = filename8
 		print('-'*100)
 		print('8. Search for Cipher.init function')
 		print('-'*100)
@@ -370,10 +346,6 @@ class cipherInit:
 #hashfunctions class used hash_functions_dict.txt to search for usages of sha1,sha256,md5 and the digest function
 class hashfunctions:
 	def hash_functions(self):
-		#print('Hash_functions_"'+var2+'".txt" was created in the rootdirectory' )
-		#the outcome will pe printed in 'Hash_functions_+'jar file''
-		#filename9  = open("Hash_functions_"+var2+".txt",'w')
-		#sys.stdout = filename9
 		print('-'*100)
 		print('9. Search for Hash functions')
 		print('-'*100)
